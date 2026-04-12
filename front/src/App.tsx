@@ -27,7 +27,7 @@ function App() {
       {data ? (
         <div>
           <p>Status: {data.status}</p>
-          <p>Uptime: {data.uptime / 1000} seconds</p>
+          <p>Uptime: {(data.uptime / 60).toFixed(0)} minutes</p>
         </div>
       ) : (
         <p>Loading...</p>
