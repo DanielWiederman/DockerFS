@@ -2,6 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 // import 'dotenv/config'; // Loads variables from .env
 import cors from 'cors';
 import pool from './db.js';
+import redisClient from './redis';
 
 const app: Application = express();
 const PORT = process.env.PORT || 4011;
@@ -17,6 +18,25 @@ app.use(express.urlencoded({ extended: true }));
 // 2. Health Check / Basic Route
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'OK', uptime: process.uptime() });
+});
+
+app.get('/cache-test', async (req: Request, res: Response) => {
+  try {
+    // נכתוב ערך למטמון של רדיס
+    await redisClient.set('test_key', 'Hello from Redis 8.6.2!');
+    
+    // נקרא אותו מיד חזרה (הבקשה לוקחת מילי-שניות)
+    const value = await redisClient.get('test_key');
+    
+    res.status(200).json({ 
+      success: true, 
+      message: 'Redis is working flawlessly!',
+      cached_value: value 
+    });
+  } catch (error) {
+    console.error('Redis test failed:', error);
+    res.status(500).json({ success: false, error: 'Failed to connect to Redis' });
+  }
 });
 
 app.get('/db-test', async (req: Request, res: Response) => {
