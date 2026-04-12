@@ -29,6 +29,7 @@ services:
       - db
       - redis
     volumes:
+      - ./:/workspace
       - ./server:/app          # מסנכרן את הקוד
       - /app/node_modules
     environment:

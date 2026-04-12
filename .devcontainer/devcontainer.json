@@ -1,0 +1,16 @@
+{
+  "name": "Full Stack Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "backend",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dsznajder.es7-react-js-snippets",
+        "PKief.material-icon-theme",
+        "ms-ossdata.vscode-pgsql",
+        "Redis.redis-for-vscode"
+      ]
+    }
+  }
+}
