@@ -1,36 +1,49 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-
-const API_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000'
-
-export interface HealthResponse {
-  status: string
-  uptime: number
-}
+import { DB_TEST_URL, HEALTH_URL, type DbTestResponse, type HealthResponse } from './apiUrls'
 
 function App() {
-  const [data, setData] = useState<HealthResponse | null>(null)
+  const [healthData, setHealthData] = useState<HealthResponse | null>(null)
+  const [dbData, setDbData] = useState<DbTestResponse | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${API_URL}/health`)
+      const response = await fetch(HEALTH_URL)
       const data = await response.json() as HealthResponse
-      setData(data)
+      setHealthData(data)
     }
     fetchData()
   }, [])
   
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(DB_TEST_URL)
+      const data = await response.json() as DbTestResponse
+      setDbData(data)
+    }
+    fetchData()
+  }, [])
 
   return (
     <>
       <h1>Health Check</h1>
-      {data ? (
+      {healthData ? (
         <div>
-          <p>Status: {data.status}</p>
-          <p>Uptime: {(data.uptime / 60).toFixed(0)} minutes</p>
+          <p>Status: {healthData.status}</p>
+          <p>Uptime: {(healthData.uptime / 60).toFixed(0)} minutes</p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>Loading health data...</p>
+      )}
+      <h1>Database Test</h1>
+      {dbData ? (
+        <div>
+          <p>Success: {dbData.success ? 'Yes' : 'No'}</p>
+          <p>Message: {dbData.message}</p>
+          <p>DB Time: {dbData.db_time}</p>
+        </div>
+      ) : (
+        <p>Loading database data...</p>
       )}
     </>
   )
