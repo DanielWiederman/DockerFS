@@ -2,7 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 // import 'dotenv/config'; // Loads variables from .env
 import cors from 'cors';
 import pool from './db.js';
-import redisClient from './redis';
+import redisClient from './redis.js';
 
 const app: Application = express();
 const PORT = process.env.PORT || 4011;
