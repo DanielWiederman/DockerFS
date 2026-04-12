@@ -1,0 +1,44 @@
+services:
+  # מסד הנתונים
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=yad2_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # שרת הבאקאנד (Node.js)
+  backend:
+    build: ./server
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - ./server:/app          # מסנכרן את הקוד
+      - /app/node_modules
+    environment:
+      - DATABASE_URL=postgres://myuser:mypassword@db:5432/yad2_db
+      - PORT=5000
+
+  # הפרונטאנד (React)
+  frontend:
+    build: ./front
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    stdin_open: true # מאפשר ל-React לעשות Hot Reload
+    volumes:
+      - ./front:/app           # מסנכרן את הפרונט
+      - /app/node_modules      # מגן על הספריות של הפרונט
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+
+volumes:
+  postgres_data: # זה מבטיח שהנתונים לא יימחקו כשתסגור את הדוקר
