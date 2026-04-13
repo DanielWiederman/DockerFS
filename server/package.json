@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon -L --exec tsx index.ts",
+    "migrate": "tsx --env-file=.env migrate.ts",
     "build": "tsc"
   },
   "keywords": [],
