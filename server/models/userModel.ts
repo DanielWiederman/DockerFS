@@ -34,4 +34,12 @@ export const UserModel = {
 
     return result.rows[0] as User;
   },
+
+  async delete(id: number): Promise<boolean> {
+    const result = await pool.query(
+      'DELETE FROM users WHERE id = $1',
+      [id]
+    );
+    return (result.rowCount ?? 0) > 0;
+  },
 };
