@@ -1,10 +1,5 @@
 import pool from '../db.js';
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-}
+import { User } from '@shared/index';
 
 export const UserModel = {
   async getAll(): Promise<User[]> {

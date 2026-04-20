@@ -19,6 +19,10 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+    // Path aliases
+    "paths": {
+      "@shared/*": ["../types/*.ts"]
+    },
 
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,

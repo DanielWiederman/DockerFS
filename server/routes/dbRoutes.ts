@@ -1,8 +1,10 @@
 import { Router } from 'express';
-import { testDb } from '../controllers/dbController.js';
+import { testMongoDb, testPostgresDb } from '../controllers/dbController.js';
+
 
 const router = Router();
 
-router.get('/db-test', testDb);
+router.get('/db-postgres-test', testPostgresDb);
+router.get('/db-mongodb-test',testMongoDb)
 
 export default router;
